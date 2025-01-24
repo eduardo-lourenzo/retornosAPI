@@ -1,12 +1,11 @@
 package com.example.retornosAPI.services;
 
-import com.example.retornosAPI.models.Product;
+import com.example.retornosAPI.models.ProductDTO;
 import com.example.retornosAPI.models.ProductEntity;
 import com.example.retornosAPI.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,21 +17,21 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public Product createProduct(Product product) {
-        ProductEntity entity = new ProductEntity(null, product.name(), product.price());
+    public ProductDTO createProduct(ProductDTO productDTO) {
+        ProductEntity entity = new ProductEntity(null, productDTO.name(), productDTO.price());
         ProductEntity savedEntity = repository.save(entity);
-        return new Product(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
+        return new ProductDTO(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
     }
 
-    public Product getProductById(Long id) {
+    public ProductDTO getProductById(Long id) {
         ProductEntity entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-        return new Product(entity.getId(), entity.getName(), entity.getPrice());
+                .orElseThrow(() -> new RuntimeException("ProductDTO not found"));
+        return new ProductDTO(entity.getId(), entity.getName(), entity.getPrice());
     }
 
-    public List<Product> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         return repository.findAll().stream()
-                .map(entity -> new Product(entity.getId(), entity.getName(), entity.getPrice()))
+                .map(entity -> new ProductDTO(entity.getId(), entity.getName(), entity.getPrice()))
                 .collect(Collectors.toList());
     }
 
@@ -41,24 +40,24 @@ public class ProductService {
     }
 
     // Atualizar um produto existente
-    public Product updateProduct(Long id, Product updatedProduct) {
+    public ProductDTO updateProduct(Long id, ProductDTO updatedProductDTO) {
         // Verificar se o produto existe
         ProductEntity existingEntity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product with ID " + id + " not found"));
+                .orElseThrow(() -> new RuntimeException("ProductDTO with ID " + id + " not found"));
 
         // Atualizar os dados do produto
-        existingEntity.setName(updatedProduct.name());
-        existingEntity.setPrice(updatedProduct.price());
+        existingEntity.setName(updatedProductDTO.name());
+        existingEntity.setPrice(updatedProductDTO.price());
 
         // Salvar as alterações no banco de dados
         ProductEntity savedEntity = repository.save(existingEntity);
 
         // Retornar o produto atualizado
-        return new Product(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
+        return new ProductDTO(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
     }
 
     // Buscar produtos pelo nome
-    public List<Product> getProductsByName(String name) {
+    public List<ProductDTO> getProductsByName(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("O nome do produto não pode ser vazio.");
         }
@@ -70,7 +69,7 @@ public class ProductService {
             System.out.println("Produtos encontrados com o nome '" + name + "': " + entities.size());
         }
         return entities.stream()
-                .map(entity -> new Product(entity.getId(), entity.getName(), entity.getPrice()))
+                .map(entity -> new ProductDTO(entity.getId(), entity.getName(), entity.getPrice()))
                 .collect(Collectors.toList());
     }
 }
