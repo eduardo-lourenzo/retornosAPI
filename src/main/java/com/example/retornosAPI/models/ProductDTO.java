@@ -1,10 +1,12 @@
 package com.example.retornosAPI.models;
 
+import java.math.BigDecimal;
+
 public record ProductDTO(
         Long id,
         String name,
         String description,
-        Double price,
+        BigDecimal price,
         String category
 ) {
 }

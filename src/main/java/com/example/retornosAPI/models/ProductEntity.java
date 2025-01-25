@@ -3,6 +3,7 @@ package com.example.retornosAPI.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.math.BigDecimal;
 import java.util.NoSuchElementException;
 
 @Entity
@@ -21,7 +22,7 @@ public class ProductEntity {
 
     @DecimalMin(value = "0.00", inclusive = false, message = "O preço do produto deve ser maior que zero")
     @Digits(integer = 6, fraction = 2)
-    private Double price;
+    private BigDecimal price;
 
     @Min(value = 0, message = "A quantidade do produto em estoque deve ser um número maior ou igual a zero.")
     private int stockQuantity;
@@ -33,7 +34,7 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity(Long id, String name, String description, Double price, @NotBlank(message = "A categoria do produto é obrigatória.") String category) {
+    public ProductEntity(Long id, String name, String description, BigDecimal price, @NotBlank(message = "A categoria do produto é obrigatória.") String category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -59,7 +60,7 @@ public class ProductEntity {
         this.description = description;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -80,7 +81,7 @@ public class ProductEntity {
         return description;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
