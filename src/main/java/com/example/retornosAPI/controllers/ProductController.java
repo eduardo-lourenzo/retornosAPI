@@ -2,6 +2,7 @@ package com.example.retornosAPI.controllers;
 
 import com.example.retornosAPI.models.ProductDTO;
 import com.example.retornosAPI.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +23,14 @@ public class ProductController {
         return ResponseEntity.ok(service.createProduct(productDTO));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(service.getProductById(id));
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<ProductDTO>> getProductsByName(@PathVariable @Valid String name) {
+        return ResponseEntity.ok(service.getProductsByName(name));
     }
 
     @GetMapping
