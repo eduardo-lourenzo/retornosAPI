@@ -41,11 +41,10 @@ public enum Category {
         return description;
     }
 
-    public Optional<Category> validateCategory(String description) {
+    public static Optional<Category> searchCategory(String description) {
         return Stream.of(Category.values())
                 .filter(
-                        category -> getDescription()
-                                .equalsIgnoreCase(description)
+                        category -> category.getDescription().equalsIgnoreCase(description)
                 ).findAny();
     }
 }

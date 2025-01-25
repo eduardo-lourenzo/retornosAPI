@@ -2,7 +2,9 @@ package com.example.retornosAPI.services;
 
 import com.example.retornosAPI.models.ProductDTO;
 import com.example.retornosAPI.models.ProductEntity;
+import com.example.retornosAPI.models.ProductMapper;
 import com.example.retornosAPI.repositories.ProductRepository;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,24 +20,29 @@ public class ProductService {
     }
 
     public ProductDTO createProduct(ProductDTO productDTO) {
-        ProductEntity entity = new ProductEntity(null, productDTO.name(), productDTO.price());
-        ProductEntity savedEntity = repository.save(entity);
-        return new ProductDTO(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
+        ProductEntity newEntity = ProductMapper.fromDtoToEntity(productDTO);
+
+        ProductEntity savedEntity = repository.save(newEntity);
+
+        return ProductMapper.fromEntityToDto(savedEntity);
     }
 
     public ProductDTO getProductById(Long id) {
-        ProductEntity entity = repository.findById(id)
+        ProductEntity foundEntity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ProductDTO not found"));
-        return new ProductDTO(entity.getId(), entity.getName(), entity.getPrice());
+        return ProductMapper.fromEntityToDto(foundEntity);
     }
 
     public List<ProductDTO> getAllProducts() {
         return repository.findAll().stream()
-                .map(entity -> new ProductDTO(entity.getId(), entity.getName(), entity.getPrice()))
+                .map(ProductMapper::fromEntityToDto)
                 .collect(Collectors.toList());
     }
 
     public void deleteProduct(Long id) {
+        ProductEntity foundEntity = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ProductDTO not found"));
+
         repository.deleteById(id);
     }
 
@@ -47,29 +54,27 @@ public class ProductService {
 
         // Atualizar os dados do produto
         existingEntity.setName(updatedProductDTO.name());
+        existingEntity.setDescription(updatedProductDTO.description());
         existingEntity.setPrice(updatedProductDTO.price());
+        existingEntity.setCategory(updatedProductDTO.category());
 
         // Salvar as alterações no banco de dados
         ProductEntity savedEntity = repository.save(existingEntity);
 
         // Retornar o produto atualizado
-        return new ProductDTO(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
+        return ProductMapper.fromEntityToDto(savedEntity);
     }
 
     // Buscar produtos pelo nome
-    public List<ProductDTO> getProductsByName(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("O nome do produto não pode ser vazio.");
-        }
-
+    public List<ProductDTO> getProductsByName(@NotBlank(message = "O nome do produto é obrigatório.") String name) {
         List<ProductEntity> entities = repository.findByNameContainingIgnoreCase(name);
-        if (entities.isEmpty()) {
-            System.out.println("Nenhum produto encontrado com o nome: " + name);
-        } else {
-            System.out.println("Produtos encontrados com o nome '" + name + "': " + entities.size());
-        }
+        // if (entities.isEmpty()) {
+        //     System.out.println("Nenhum produto encontrado com o nome: " + name);
+        // } else {
+        //     System.out.println("Produtos encontrados com o nome '" + name + "': " + entities.size());
+        // }
         return entities.stream()
-                .map(entity -> new ProductDTO(entity.getId(), entity.getName(), entity.getPrice()))
+                .map(ProductMapper::fromEntityToDto)
                 .collect(Collectors.toList());
     }
 }
