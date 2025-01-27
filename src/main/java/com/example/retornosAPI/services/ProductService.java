@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +30,7 @@ public class ProductService {
 
     public ProductDTO getProductById(Long id) {
         ProductEntity foundEntity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ProductDTO not found"));
+                .orElseThrow(() -> new NoSuchElementException("Produto com ID:" + id + " não foi encontrado."));
         return ProductMapper.fromEntityToDto(foundEntity);
     }
 
@@ -41,7 +42,7 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         ProductEntity foundEntity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ProductDTO not found"));
+                .orElseThrow(() -> new NoSuchElementException("Produto com ID:" +id + " para deleção não foi encontrado."));
 
         repository.deleteById(id);
     }
@@ -50,7 +51,7 @@ public class ProductService {
     public ProductDTO updateProduct(Long id, ProductDTO updatedProductDTO) {
         // Verificar se o produto existe
         ProductEntity existingEntity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ProductDTO with ID " + id + " not found"));
+                .orElseThrow(() -> new NoSuchElementException("Produto com ID:" + id + " para atualização não foi encontrado"));
 
         // Atualizar os dados do produto
         existingEntity.setName(updatedProductDTO.name());
@@ -68,11 +69,7 @@ public class ProductService {
     // Buscar produtos pelo nome
     public List<ProductDTO> getProductsByName(@NotBlank(message = "O nome do produto é obrigatório.") String name) {
         List<ProductEntity> entities = repository.findByNameContainingIgnoreCase(name);
-        // if (entities.isEmpty()) {
-        //     System.out.println("Nenhum produto encontrado com o nome: " + name);
-        // } else {
-        //     System.out.println("Produtos encontrados com o nome '" + name + "': " + entities.size());
-        // }
+
         return entities.stream()
                 .map(ProductMapper::fromEntityToDto)
                 .collect(Collectors.toList());
