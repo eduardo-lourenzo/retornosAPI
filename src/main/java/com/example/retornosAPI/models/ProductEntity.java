@@ -1,10 +1,7 @@
 package com.example.retornosAPI.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
@@ -29,7 +26,7 @@ public class ProductEntity {
     private BigDecimal price;
 
     @Min(value = 0, message = "A quantidade do produto em estoque deve ser um número maior ou igual a zero.")
-    private int stockQuantity;
+    private Integer stockQuantity;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -37,11 +34,12 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity(Long id, String name, String description, BigDecimal price, String category) {
+    public ProductEntity(Long id, String name, String description, BigDecimal price, Integer stockQuantity, String category) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.stockQuantity = stockQuantity;
         setCategory(category);
     }
 
@@ -61,7 +59,10 @@ public class ProductEntity {
         this.price = price;
     }
 
-    @Validated
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
     public void setCategory(String category) {
         if(category == null || category.isBlank()) {
             throw new IllegalArgumentException("A categoria do produto é obrigatória.");
@@ -85,6 +86,10 @@ public class ProductEntity {
 
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public Integer getStockQuantity() {
+        return stockQuantity;
     }
 
     public Category getCategory() {

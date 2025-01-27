@@ -1,7 +1,6 @@
 package com.example.retornosAPI.models;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 
 public final class ProductMapper {
 
@@ -11,6 +10,7 @@ public final class ProductMapper {
                 dto.name(),
                 dto.description(),
                 dto.price(),
+                dto.stockQuantity(),
                 dto.category()
         );
     }
@@ -21,6 +21,7 @@ public final class ProductMapper {
                 entity.getName(),
                 entity.getDescription(),
                 entity.getPrice(),
+                entity.getStockQuantity(),
                 entity.getCategoryDescription()
         );
     }

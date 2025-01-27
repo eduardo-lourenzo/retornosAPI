@@ -37,13 +37,3 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado: " + ex.getMessage());
     }
 }
-
-//    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getConstraintViolations().forEach(violation -> {
-//            String fieldName = violation.getPropertyPath().toString();
-//            String errorMessage = violation.getMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
-//        return ResponseEntity.badRequest().body(errors);
-//    }
