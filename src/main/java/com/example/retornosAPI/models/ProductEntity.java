@@ -1,7 +1,10 @@
 package com.example.retornosAPI.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
@@ -20,6 +23,7 @@ public class ProductEntity {
     @Size(max = 500, message = "A descrição do produto deve ter no máximo 500 caracteres.")
     private String description;
 
+    @NotNull(message = "O preço do produto é obrigatório.")
     @DecimalMin(value = "0.00", inclusive = false, message = "O preço do produto deve ser maior que zero")
     @Digits(integer = 6, fraction = 2)
     private BigDecimal price;
@@ -27,25 +31,18 @@ public class ProductEntity {
     @Min(value = 0, message = "A quantidade do produto em estoque deve ser um número maior ou igual a zero.")
     private int stockQuantity;
 
-    @NotNull(message = "A Categoria do produto é obrigatória e não foi encontrada.")
     @Enumerated(EnumType.STRING)
     private Category category;
 
     public ProductEntity() {
     }
 
-    public ProductEntity(Long id, String name, String description, BigDecimal price, @NotBlank(message = "A categoria do produto é obrigatória.") String category) {
+    public ProductEntity(Long id, String name, String description, BigDecimal price, String category) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         setCategory(category);
-        // this.category = Category.searchCategory(category)
-        //         .orElseThrow(() -> new NoSuchElementException("A categoria do produto não foi encontrada."));
-        // Criar um manipulador global de exceções
-        //A @ControllerAdvice
-        // @ExceptionHandler(CategoryNotFoundException.class)
-
     }
 
     public void setId(Long id) {
@@ -64,7 +61,12 @@ public class ProductEntity {
         this.price = price;
     }
 
+    @Validated
     public void setCategory(String category) {
+        if(category == null || category.isBlank()) {
+            throw new IllegalArgumentException("A categoria do produto é obrigatória.");
+        }
+
         this.category = Category.searchCategory(category)
                 .orElseThrow(() -> new NoSuchElementException("A categoria do produto não foi encontrada."));
     }

@@ -1,8 +1,11 @@
 package com.example.retornosAPI.models;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+
 public final class ProductMapper {
 
-    public static ProductEntity fromDtoToEntity(ProductDTO dto) {
+    public static ProductEntity fromDtoToEntity(@Valid ProductDTO dto) {
         return new ProductEntity(
                 null,
                 dto.name(),
