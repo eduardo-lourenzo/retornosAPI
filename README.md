@@ -96,9 +96,14 @@ JSONs enviados no corpo da mensagem para "Criar" ou "Atualizar" um produto.
   "category": "Livros"
 }
 ```
-```json
+## Tipos de categorias
 
-```
-```json
-
-```
+| Coluna 1    | Coluna 2         | Coluna 3       | Coluna 4       |
+|-------------|------------------|----------------|----------------|
+| Acessórios  | Eletrodomésticos | Automotivo     | Beleza         |
+| Livros      | Limpeza          | Roupas         | Construção     |
+| Decoração   | Bebidas          | Eletrônicos    | Alimentos      |
+| Móveis      | Jogos            | Saúde          | Higiene        |
+| Informática | Lazer            | Filmes         | Músicas        |
+| Esportes    | Papelaria        | Ferramentas    | Brinquedos     |
+| Viagem      | Utilidades       |                |                |
