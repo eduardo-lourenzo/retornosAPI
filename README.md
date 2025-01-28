@@ -98,12 +98,12 @@ JSONs enviados no corpo da mensagem para "Criar" ou "Atualizar" um produto.
 ```
 ## Tipos de categorias
 
-| Coluna 1    | Coluna 2         | Coluna 3       | Coluna 4       |
-|-------------|------------------|----------------|----------------|
-| Acessórios  | Eletrodomésticos | Automotivo     | Beleza         |
-| Livros      | Limpeza          | Roupas         | Construção     |
-| Decoração   | Bebidas          | Eletrônicos    | Alimentos      |
-| Móveis      | Jogos            | Saúde          | Higiene        |
-| Informática | Lazer            | Filmes         | Músicas        |
-| Esportes    | Papelaria        | Ferramentas    | Brinquedos     |
-| Viagem      | Utilidades       |                |                |
+| Coluna 01   | Coluna 02        | Coluna 03   | Coluna 4       |
+|-------------|------------------|-------------|----------------|
+| Acessórios  | Eletrodomésticos | Automotivo  | Beleza         |
+| Livros      | Limpeza          | Roupas      | Construção     |
+| Decoração   | Bebidas          | Eletrônicos | Alimentos      |
+| Móveis      | Jogos            | Saúde       | Higiene        |
+| Informática | Lazer            | Filmes      | Músicas        |
+| Esportes    | Papelaria        | Ferramentas | Brinquedos     |
+| Viagem      | Utilidades       |             |                |
